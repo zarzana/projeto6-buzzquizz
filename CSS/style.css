@@ -1,11 +1,13 @@
 * {
     box-sizing: border-box;
 }
+
 body {
     font-family: 'Encode Sans', sans-serif;
     font-family: 'Righteous', cursive;
     font-family: 'Roboto', sans-serif;
     position: relative;
+    background-color: #E5E5E5;
 }
 
 .fixed_top_bar {
