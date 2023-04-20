@@ -10,138 +10,148 @@ axios.defaults.headers.common['Authorization'] = 'Fxjk1r6zE4PiUsz1zfhA34GZ';
 // post para criar quizz
 // const newQuizzPromisse = axios.post('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes', newQuizz);
 
-function loadQuizz(quizzId) {
 
-    const quizzPromisse = axios.get(`https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes/${quizzId}`)
-    quizzPromisse.then(renderQuizzPage)
+class QuizzPage {
 
-}
-
-function fisherYatesShuffle(arr) {
-
-    let i = arr.length;
-
-    while (--i > 0) {
-
-      let randIndex = Math.floor(Math.random() * (i + 1));
-      [arr[randIndex], arr[i]] = [arr[i], arr[randIndex]];
-
+    constructor (id) {
+        this.id = id;
     }
 
-    return arr;
+    static fisherYatesShuffle (arr) {
 
-}
-
-function renderQuizzPage (quizzResponse) {
-
-    var quizzData = quizzResponse.data;
-
-    // quizz banner
-
-    var quizzBanner = document.createElement('div');
-    quizzBanner.setAttribute('class', 'quizz-banner darken-60');
-    quizzBanner.setAttribute('data-test', 'banner');
-
-    var quizzBannerImage = document.createElement('img');
-    quizzBannerImage.setAttribute('src', quizzData.image);
-
-    var quizzBannerH1 = document.createElement('h1');
-    quizzBannerH1.innerHTML = quizzData.title;
-
-    quizzBanner.appendChild(quizzBannerImage);
-    quizzBanner.appendChild(quizzBannerH1);
-    document.body.appendChild(quizzBanner);
-
-    // quizz questions
-
-    quizzData.questions.forEach(question => {
-        
-        var quizzQuestionDiv = document.createElement('div');
-        quizzQuestionDiv.setAttribute('class', 'quizz-question');
-        quizzQuestionDiv.setAttribute('data-test', 'question');
-
-        var quizzQuestionTitle = document.createElement('div');
-        quizzQuestionTitle.setAttribute('class', 'quizz-question-title');
-        quizzQuestionTitle.setAttribute('data-test', 'question-title');
-        quizzQuestionTitle.style.backgroundColor = question.color;
-        var quizzQuestionTitleH2 = document.createElement('h2');
-        quizzQuestionTitleH2.innerHTML = question.title;
-        quizzQuestionTitle.appendChild(quizzQuestionTitleH2);
-
-        var quizzAnswersDiv = document.createElement('div');
-        quizzAnswersDiv.setAttribute('class', 'quizz-answers');
-
-        var i = 0
-        var correctAnswerId = null;
-
-        fisherYatesShuffle(question.answers).forEach(answer => {
-
-            if (answer.isCorrectAnswer) {correctAnswerId = `quizzAnswer${i}`}
-
-            var quizzAnswer = document.createElement('div');
-            quizzAnswer.setAttribute('class', 'quizz-answer');
-            quizzAnswer.setAttribute('id', `quizzAnswer${i}`);
-            quizzAnswer.setAttribute('data-test', 'answer');
-
-            var quizzAnswerImage = document.createElement('img');
-            quizzAnswerImage.setAttribute('src', answer.image);
-
-            var quizzAnswerText = document.createElement('p');
-            quizzAnswerText.innerHTML = answer.text;
-            quizzAnswerText.setAttribute('data-test', 'answer-text');
-
-            quizzAnswer.appendChild(quizzAnswerImage);
-            quizzAnswer.appendChild(quizzAnswerText);
-            quizzAnswersDiv.appendChild(quizzAnswer);
-
-            i += 1;
-
-        })
-
-        quizzQuestionDiv.appendChild(quizzQuestionTitle);
-        quizzQuestionDiv.appendChild(quizzAnswersDiv);
-        document.body.appendChild(quizzQuestionDiv);
-
-        answerSelection(quizzQuestionDiv.lastChild, correctAnswerId)
-
-    });
-
-}
-
-function answerSelection(questionDiv, correctAnswerId, targetClass = 'quizz-answer') {
-
-    var elements = questionDiv.querySelectorAll('.' + targetClass);
-
-    for (let i = 0; i < elements.length; i++) {
-
-        elements[i].addEventListener('click', () => {
-
-            if (elements[i].id == correctAnswerId) {
-
-                // runs when selection is correct
+        let i = arr.length;
     
-            }
+        while (--i > 0) {
+    
+        let randIndex = Math.floor(Math.random() * (i + 1));
+        [arr[randIndex], arr[i]] = [arr[i], arr[randIndex]];
+    
+        }
+    
+        return arr;
+    
+    }
 
-            for (let j = 0; j < elements.length; j++) {
+    static answerSelection (questionDiv, correctAnswerId, targetClass = 'quizz-answer') {
 
-                if (elements[i] === elements[j]) {elements[j].classList.add('selected-answer')}
-                else {elements[j].classList.add('unselected-answer')}
+        var elements = questionDiv.querySelectorAll('.' + targetClass);
+    
+        for (let i = 0; i < elements.length; i++) {
+    
+            elements[i].addEventListener('click', () => {
+    
+                if (elements[i].id == correctAnswerId) {
+    
+                    // runs when selection is correct
+        
+                }
+    
+                for (let j = 0; j < elements.length; j++) {
+    
+                    if (elements[i] === elements[j]) {elements[j].classList.add('selected-answer')}
+                    else {elements[j].classList.add('unselected-answer')}
+    
+                    if (elements[j].id == correctAnswerId) {elements[j].lastChild.style.color = '#009C22'}
+                    else {elements[j].lastChild.style.color = '#FF4B4B'}
+                
+                }
+    
+                setTimeout(() => {
+    
+                    questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
+    
+                }, 2000)
+    
+            }, {once : true})
+    
+        }
+    
+    }
 
-                if (elements[j].id == correctAnswerId) {elements[j].lastChild.style.color = '#009C22'}
-                else {elements[j].lastChild.style.color = '#FF4B4B'}
+    load () {
+
+        const quizzPromisse = axios.get(`https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes/${this.id}`)
+        quizzPromisse.then(this.renderQuizzPage)
+
+    }
+
+    renderQuizzPage (quizzResponse) {
+
+        var quizzData = quizzResponse.data;
+
+        // quizz banner
+
+        var quizzBanner = document.createElement('div');
+        quizzBanner.setAttribute('class', 'quizz-banner darken-60');
+        quizzBanner.setAttribute('data-test', 'banner');
+
+        var quizzBannerImage = document.createElement('img');
+        quizzBannerImage.setAttribute('src', quizzData.image);
+
+        var quizzBannerH1 = document.createElement('h1');
+        quizzBannerH1.innerHTML = quizzData.title;
+
+        quizzBanner.appendChild(quizzBannerImage);
+        quizzBanner.appendChild(quizzBannerH1);
+        document.body.appendChild(quizzBanner);
+
+        // quizz questions
+
+        quizzData.questions.forEach(question => {
             
-            }
+            var quizzQuestionDiv = document.createElement('div');
+            quizzQuestionDiv.setAttribute('class', 'quizz-question');
+            quizzQuestionDiv.setAttribute('data-test', 'question');
 
-            setTimeout(() => {
+            var quizzQuestionTitle = document.createElement('div');
+            quizzQuestionTitle.setAttribute('class', 'quizz-question-title');
+            quizzQuestionTitle.setAttribute('data-test', 'question-title');
+            quizzQuestionTitle.style.backgroundColor = question.color;
+            var quizzQuestionTitleH2 = document.createElement('h2');
+            quizzQuestionTitleH2.innerHTML = question.title;
+            quizzQuestionTitle.appendChild(quizzQuestionTitleH2);
 
-                questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
+            var quizzAnswersDiv = document.createElement('div');
+            quizzAnswersDiv.setAttribute('class', 'quizz-answers');
 
-            }, 2000)
+            var i = 0
+            var correctAnswerId = null;
 
-        }, {once : true})
+            QuizzPage.fisherYatesShuffle(question.answers).forEach(answer => {
+
+                if (answer.isCorrectAnswer) {correctAnswerId = `quizzAnswer${i}`}
+
+                var quizzAnswer = document.createElement('div');
+                quizzAnswer.setAttribute('class', 'quizz-answer');
+                quizzAnswer.setAttribute('id', `quizzAnswer${i}`);
+                quizzAnswer.setAttribute('data-test', 'answer');
+
+                var quizzAnswerImage = document.createElement('img');
+                quizzAnswerImage.setAttribute('src', answer.image);
+
+                var quizzAnswerText = document.createElement('p');
+                quizzAnswerText.innerHTML = answer.text;
+                quizzAnswerText.setAttribute('data-test', 'answer-text');
+
+                quizzAnswer.appendChild(quizzAnswerImage);
+                quizzAnswer.appendChild(quizzAnswerText);
+                quizzAnswersDiv.appendChild(quizzAnswer);
+
+                i += 1;
+
+            })
+
+            quizzQuestionDiv.appendChild(quizzQuestionTitle);
+            quizzQuestionDiv.appendChild(quizzAnswersDiv);
+            document.body.appendChild(quizzQuestionDiv);
+
+            QuizzPage.answerSelection(quizzQuestionDiv.lastChild, correctAnswerId)
+
+        });
 
     }
 
 }
 
-// loadQuizz(1)
+// const quizz = new QuizzPage(1);
+// quizz.load();

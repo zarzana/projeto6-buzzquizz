@@ -25,6 +25,7 @@ body {
 .quizz-banner {
     position: relative;
     margin-top: 70px;
+    margin-bottom: 42px;
     width: 100%;
     height: 227px;
     display: flex;
@@ -52,7 +53,7 @@ body {
 
 .quizz-question {
     margin: auto;
-    margin-top: 42px;
+    margin-bottom: 42px;
     padding-top: 28px;
     width: 760px;
     background-color: white;
