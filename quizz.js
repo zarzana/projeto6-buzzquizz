@@ -106,7 +106,7 @@ function answerSelection(questionDiv, targetClass = 'quizz-answer') {
 
     for (let i = 0; i < elements.length; i++) {
 
-        elements[i].addEventListener('click', f = () => {
+        elements[i].addEventListener('click', () => {
 
             for (let j = 0; j < elements.length; j++) {
 
@@ -114,6 +114,12 @@ function answerSelection(questionDiv, targetClass = 'quizz-answer') {
                 else elements[j].classList.add('unselected-answer')
             
             }
+
+            setTimeout(() => {
+
+                questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
+                
+            }, 2000)
 
         }, {once : true})
 
