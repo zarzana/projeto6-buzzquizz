@@ -71,22 +71,30 @@ function renderQuizzPage (quizzResponse) {
         var quizzAnswersDiv = document.createElement('div');
         quizzAnswersDiv.setAttribute('class', 'quizz-answers');
 
+        var i = 0
+        var correctAnswerId = null;
+
         fisherYatesShuffle(question.answers).forEach(answer => {
 
+            if (answer.isCorrectAnswer) {correctAnswerId = `quizzAnswer${i}`}
+
             var quizzAnswer = document.createElement('div');
-            quizzAnswer.setAttribute('class', 'quizz-answer')
-            quizzAnswer.setAttribute('data-test', 'answer')
+            quizzAnswer.setAttribute('class', 'quizz-answer');
+            quizzAnswer.setAttribute('id', `quizzAnswer${i}`);
+            quizzAnswer.setAttribute('data-test', 'answer');
 
             var quizzAnswerImage = document.createElement('img');
             quizzAnswerImage.setAttribute('src', answer.image);
 
             var quizzAnswerText = document.createElement('p');
             quizzAnswerText.innerHTML = answer.text;
-            quizzAnswerText.setAttribute('data-test', 'answer-text')
+            quizzAnswerText.setAttribute('data-test', 'answer-text');
 
             quizzAnswer.appendChild(quizzAnswerImage);
             quizzAnswer.appendChild(quizzAnswerText);
             quizzAnswersDiv.appendChild(quizzAnswer);
+
+            i += 1;
 
         })
 
@@ -94,13 +102,13 @@ function renderQuizzPage (quizzResponse) {
         quizzQuestionDiv.appendChild(quizzAnswersDiv);
         document.body.appendChild(quizzQuestionDiv);
 
-        answerSelection(quizzQuestionDiv.lastChild)
+        answerSelection(quizzQuestionDiv.lastChild, correctAnswerId)
 
     });
 
 }
 
-function answerSelection(questionDiv, targetClass = 'quizz-answer') {
+function answerSelection(questionDiv, correctAnswerId, targetClass = 'quizz-answer') {
 
     var elements = questionDiv.querySelectorAll('.' + targetClass);
 
@@ -108,17 +116,26 @@ function answerSelection(questionDiv, targetClass = 'quizz-answer') {
 
         elements[i].addEventListener('click', () => {
 
+            if (elements[i].id == correctAnswerId) {
+
+                // runs when selection is correct
+    
+            }
+
             for (let j = 0; j < elements.length; j++) {
 
                 if (elements[i] === elements[j]) {elements[j].classList.add('selected-answer')}
-                else elements[j].classList.add('unselected-answer')
+                else {elements[j].classList.add('unselected-answer')}
+
+                if (elements[j].id == correctAnswerId) {elements[j].lastChild.style.color = '#009C22'}
+                else {elements[j].lastChild.style.color = '#FF4B4B'}
             
             }
 
             setTimeout(() => {
 
                 questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
-                
+
             }, 2000)
 
         }, {once : true})
@@ -127,4 +144,4 @@ function answerSelection(questionDiv, targetClass = 'quizz-answer') {
 
 }
 
-loadQuizz(1)
+// loadQuizz(1)
