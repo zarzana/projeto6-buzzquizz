@@ -32,7 +32,6 @@ function fisherYatesShuffle(arr) {
 
 }
 
-// CHECK TODO INSIDE
 function renderQuizzPage (quizzResponse) {
 
     var quizzData = quizzResponse.data;
@@ -62,8 +61,9 @@ function renderQuizzPage (quizzResponse) {
         quizzQuestionDiv.setAttribute('data-test', 'question');
 
         var quizzQuestionTitle = document.createElement('div');
-        quizzQuestionTitle.setAttribute('class', 'quizz-question-title');  // TODO: add background colors
+        quizzQuestionTitle.setAttribute('class', 'quizz-question-title');
         quizzQuestionTitle.setAttribute('data-test', 'question-title');
+        quizzQuestionTitle.style.backgroundColor = question.color;
         var quizzQuestionTitleH2 = document.createElement('h2');
         quizzQuestionTitleH2.innerHTML = question.title;
         quizzQuestionTitle.appendChild(quizzQuestionTitleH2);
@@ -74,6 +74,7 @@ function renderQuizzPage (quizzResponse) {
         fisherYatesShuffle(question.answers).forEach(answer => {
 
             var quizzAnswer = document.createElement('div');
+            quizzAnswer.setAttribute('class', 'quizz-answer')
             quizzAnswer.setAttribute('data-test', 'answer')
 
             var quizzAnswerImage = document.createElement('img');
@@ -93,6 +94,34 @@ function renderQuizzPage (quizzResponse) {
         quizzQuestionDiv.appendChild(quizzAnswersDiv);
         document.body.appendChild(quizzQuestionDiv);
 
+        answerSelection(quizzQuestionDiv.lastChild)
+
     });
 
 }
+
+function answerSelection(questionDiv, targetClass = 'quizz-answer') {
+
+    var elements = questionDiv.querySelectorAll('.' + targetClass);
+
+    for (let i = 0; i < elements.length; i++) {
+
+        elements[i].addEventListener('click', () => {
+
+            for (let j = 0; j < elements.length; j++) {
+
+                if (elements[i] != elements[j]) {
+
+                    elements[j].style.opacity = 0.3;
+
+                }
+
+            }
+
+        })
+
+    }
+
+}
+
+// loadQuizz(1)
