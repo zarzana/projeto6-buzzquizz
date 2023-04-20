@@ -15,6 +15,11 @@ class QuizzPage {
 
     constructor (id) {
         this.id = id;
+        this.numberOfQuestions = null;
+        this.correctAnswers = 0;
+        this.data = null;
+        this.renderQuizzPage = this.renderQuizzPage.bind(this);
+        this.answerSelection = this.answerSelection.bind(this);
     }
 
     static fisherYatesShuffle (arr) {
@@ -32,42 +37,6 @@ class QuizzPage {
     
     }
 
-    static answerSelection (questionDiv, correctAnswerId, targetClass = 'quizz-answer') {
-
-        var elements = questionDiv.querySelectorAll('.' + targetClass);
-    
-        for (let i = 0; i < elements.length; i++) {
-    
-            elements[i].addEventListener('click', () => {
-    
-                if (elements[i].id == correctAnswerId) {
-    
-                    // runs when selection is correct
-        
-                }
-    
-                for (let j = 0; j < elements.length; j++) {
-    
-                    if (elements[i] === elements[j]) {elements[j].classList.add('selected-answer')}
-                    else {elements[j].classList.add('unselected-answer')}
-    
-                    if (elements[j].id == correctAnswerId) {elements[j].lastChild.style.color = '#009C22'}
-                    else {elements[j].lastChild.style.color = '#FF4B4B'}
-                
-                }
-    
-                setTimeout(() => {
-    
-                    questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
-    
-                }, 2000)
-    
-            }, {once : true})
-    
-        }
-    
-    }
-
     load () {
 
         const quizzPromisse = axios.get(`https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes/${this.id}`)
@@ -77,7 +46,7 @@ class QuizzPage {
 
     renderQuizzPage (quizzResponse) {
 
-        var quizzData = quizzResponse.data;
+        this.data = quizzResponse.data;
 
         // quizz banner
 
@@ -86,10 +55,10 @@ class QuizzPage {
         quizzBanner.setAttribute('data-test', 'banner');
 
         var quizzBannerImage = document.createElement('img');
-        quizzBannerImage.setAttribute('src', quizzData.image);
+        quizzBannerImage.setAttribute('src', this.data.image);
 
         var quizzBannerH1 = document.createElement('h1');
-        quizzBannerH1.innerHTML = quizzData.title;
+        quizzBannerH1.innerHTML = this.data.title;
 
         quizzBanner.appendChild(quizzBannerImage);
         quizzBanner.appendChild(quizzBannerH1);
@@ -97,7 +66,9 @@ class QuizzPage {
 
         // quizz questions
 
-        quizzData.questions.forEach(question => {
+        this.numberOfQuestions = this.data.questions.length;
+
+        this.data.questions.forEach(question => {
             
             var quizzQuestionDiv = document.createElement('div');
             quizzQuestionDiv.setAttribute('class', 'quizz-question');
@@ -145,9 +116,70 @@ class QuizzPage {
             quizzQuestionDiv.appendChild(quizzAnswersDiv);
             document.body.appendChild(quizzQuestionDiv);
 
-            QuizzPage.answerSelection(quizzQuestionDiv.lastChild, correctAnswerId)
+            this.answerSelection(quizzQuestionDiv.lastChild, correctAnswerId)
 
         });
+
+    }
+
+    answerSelection (questionDiv, correctAnswerId, targetClass = 'quizz-answer') {
+
+        var elements = questionDiv.querySelectorAll('.' + targetClass);
+    
+        for (let i = 0; i < elements.length; i++) {
+    
+            elements[i].addEventListener('click', () => {
+    
+                if (elements[i].id == correctAnswerId) {
+    
+                    this.correctAnswers += 1;
+        
+                }
+    
+                for (let j = 0; j < elements.length; j++) {
+    
+                    if (elements[i] === elements[j]) {elements[j].classList.add('selected-answer')}
+                    else {elements[j].classList.add('unselected-answer')}
+    
+                    if (elements[j].id == correctAnswerId) {elements[j].lastChild.style.color = '#009C22'}
+                    else {elements[j].lastChild.style.color = '#FF4B4B'}
+                
+                }
+    
+                setTimeout(() => {
+    
+                    questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
+    
+                }, 2000)
+
+                this.resultTrigger()
+    
+            }, {once : true})
+    
+        }
+    
+    }
+
+    resultTrigger () {
+
+        if (document.querySelectorAll('.selected-answer').length == this.numberOfQuestions) {
+            
+            var percentageCorrect = 100 * this.correctAnswers / this.numberOfQuestions;
+            var percentageCorrectDisplay = Math.round(percentageCorrect);
+
+            var achievedLevel = null;
+
+            this.data.levels.forEach(level => {
+
+                if (percentageCorrect >= level.minValue) {
+
+                    achievedLevel = level;
+
+                }
+
+            })
+            
+        }
 
     }
 
