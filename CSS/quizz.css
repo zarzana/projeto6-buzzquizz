@@ -17,6 +17,11 @@ body {
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
 }
 
+.unselected-answer {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
 .quizz-banner {
     position: relative;
     margin-top: 70px;

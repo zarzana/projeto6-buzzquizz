@@ -106,22 +106,19 @@ function answerSelection(questionDiv, targetClass = 'quizz-answer') {
 
     for (let i = 0; i < elements.length; i++) {
 
-        elements[i].addEventListener('click', () => {
+        elements[i].addEventListener('click', f = () => {
 
             for (let j = 0; j < elements.length; j++) {
 
-                if (elements[i] != elements[j]) {
-
-                    elements[j].style.opacity = 0.3;
-
-                }
-
+                if (elements[i] === elements[j]) {elements[j].classList.add('selected-answer')}
+                else elements[j].classList.add('unselected-answer')
+            
             }
 
-        })
+        }, {once : true})
 
     }
 
 }
 
-// loadQuizz(1)
+loadQuizz(1)
