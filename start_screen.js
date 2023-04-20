@@ -10,9 +10,8 @@ function rendering_quizzes (quizzes) {
     
 
     for (let i = 0; i < all_quizzes.length; i++) {
-        console.log(all_quizzes[i])
         HTMLquizzes.innerHTML += `
-        <div onclick="enter_in_quiz()" class="quizz">
+        <div onclick="enter_in_quiz(${all_quizzes[i].id})" class="quizz">
 
             <img class="img_quiz" src=${all_quizzes[i].image}>
             <div class="gradient"></div>
@@ -48,8 +47,17 @@ promisse.catch(handle_error)
 
 
 
+function rendering_quizz (quizz) {
+    const HTMLquizz = document.querySelector('.content_adjust')
+    HTMLquizz.innerHTML = ''
+
+    console.log(quizz)
+
+}
 
 
 
-
-//function enter_in_quiz () {}
+function enter_in_quiz (id) {
+    const promisse = axios.get(`https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes/${id}`)
+    promisse.then(rendering_quizz)
+}
