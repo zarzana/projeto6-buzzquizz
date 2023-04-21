@@ -236,6 +236,7 @@ function returnMenu(){
 }
 
 function enterQuizz(id){
+    document.body.innerHTML="";
     var quizz = new QuizzPage(id);
     quizz.load();
 }
