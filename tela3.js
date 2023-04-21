@@ -1,4 +1,5 @@
-const obj = {};
+let obj = {};
+axios.defaults.headers.common['Authorization'] = 'Fxjk1r6zE4PiUsz1zfhA34GZ';
 
 function checkImage(url) {
     const img = new Image();
@@ -99,6 +100,7 @@ function Create(){
     <p class="criarPTitulo">Comece pelo começo</p>
     <div class="area">
     </div>`;
+    Object.keys(obj).forEach(key => delete obj[key]);
     addCreation();
 }
 
@@ -208,6 +210,20 @@ async function Success(){
             obj["levels"][i]['text'] = descNiveis[i].value;
             obj["levels"][i]['minValue'] = acNiveis[i].value;
         }
+        const promise = axios.post('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes',obj);
+        promise.then(resposta =>{
+            if(localStorage.getItem("ids")==null){
+                localStorage.setItem('ids','[]');
+            }
+            let ls = localStorage.getItem('ids');
+            ls = JSON.parse(ls);
+            ls[ls.length] = {"id":resposta.data["id"]};
+            ls = JSON.stringify(ls);
+            localStorage.setItem("ids",ls);
+            console.log(resposta);
+            document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
+            addSuccess(obj["title"],obj["image"]);
+        })
         document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
         addSuccess(obj["title"],obj["image"]);
     }else{
