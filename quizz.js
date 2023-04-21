@@ -8,7 +8,7 @@ axios.defaults.headers.common['Authorization'] = 'Fxjk1r6zE4PiUsz1zfhA34GZ';
 // e o objeto da div que deve conter os elementos da página como segundo parâmetro:
 
 // const pageDiv = document.body.querySelector('.page');
-// const quizz = new QuizzPage(1, pageDiv);
+// var quizz = new QuizzPage(1, pageDiv);
 
 // Para então carregar os elementos na página, basta utilizar o método .load():
 
@@ -25,6 +25,8 @@ class QuizzPage {
         this.numberOfQuestions = null;
         this.correctAnswers = 0;
         this.data = null;
+        this.achievedLevel = null;
+        this.percentageCorrect = null;
 
         this.renderQuizzPage = this.renderQuizzPage.bind(this);
         this.answerSelection = this.answerSelection.bind(this);
@@ -174,22 +176,57 @@ class QuizzPage {
 
         if (document.querySelectorAll('.selected-answer').length == this.numberOfQuestions) {
             
-            var percentageCorrect = 100 * this.correctAnswers / this.numberOfQuestions;
-            var percentageCorrectDisplay = Math.round(percentageCorrect);
-
-            var achievedLevel = null;
+            this.percentageCorrect = 100 * this.correctAnswers / this.numberOfQuestions;
 
             this.data.levels.forEach(level => {
 
-                if (percentageCorrect >= level.minValue) {
+                if (this.percentageCorrect >= level.minValue) {
 
-                    achievedLevel = level;
+                    this.achievedLevel = level;
 
                 }
 
             })
+
+            this.renderResult()
             
         }
+
+    }
+
+    renderResult () {
+
+        console.log(this.achievedLevel);
+
+        var quizzResult = document.createElement('div');
+        quizzResult.setAttribute('class', 'quizz-result');
+
+        var quizzResultTitle = document.createElement('div');
+        quizzResultTitle.setAttribute('class', 'quizz-result-title');
+        quizzResultTitle.setAttribute('data-test', 'level-title');
+
+        var quizzResultTitleH2 = document.createElement('h2');
+        quizzResultTitleH2.innerHTML = Math.round(this.percentageCorrect) + '% de acerto: ' + this.achievedLevel.title;
+        quizzResultTitle.appendChild(quizzResultTitleH2);
+
+        var quizzResultContent = document.createElement('div');
+        quizzResultContent.setAttribute('class', 'quizz-result-content');
+
+        var quizzResultContentImage = document.createElement('img');
+        quizzResultContentImage.setAttribute('data-test', 'level-img');
+        quizzResultContentImage.setAttribute('src', this.achievedLevel.image);
+
+        var quizzResultContentText = document.createElement('p');
+        quizzResultContentText.setAttribute('data-test', 'level-text');
+        quizzResultContentText.innerHTML = this.achievedLevel.text;
+
+        quizzResultContent.appendChild(quizzResultContentImage);
+        quizzResultContent.appendChild(quizzResultContentText);
+        
+        quizzResult.appendChild(quizzResultTitle);
+        quizzResult.appendChild(quizzResultContent);
+
+        this.targetElement.appendChild(quizzResult);
 
     }
 
@@ -201,7 +238,7 @@ class QuizzPage {
 
 }
 
-// const pageDiv = document.body.querySelector('.page');
-// const quizz = new QuizzPage(1, pageDiv);
+const pageDiv = document.body.querySelector('.page');
+var quizz = new QuizzPage(1, pageDiv);
 
-// quizz.load();
+quizz.load();
