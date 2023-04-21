@@ -64,10 +64,14 @@ console.log(Object.keys(localStorage)[1])
 
 
 function rendering_quizz (quizz) {
+    console.log(quizz)
     const HTMLquizz = document.querySelector('.content_adjust')
     HTMLquizz.innerHTML = ''
-
-    console.log(quizz)
+    
+    const pageDiv = document.body.querySelector('.content_adjust');
+    var quizz = new QuizzPage(quizz.data.id, pageDiv);
+    
+    quizz.load();
 
 }
 

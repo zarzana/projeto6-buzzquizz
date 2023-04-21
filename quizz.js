@@ -282,7 +282,4 @@ class QuizzPage {
 
 }
 
-const pageDiv = document.body.querySelector('.page');
-var quizz = new QuizzPage(26, pageDiv);
 
-quizz.load();
