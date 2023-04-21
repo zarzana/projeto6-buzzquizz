@@ -24,8 +24,8 @@ function addQuestions(numero){
     const areaQuestions = document.querySelector(".area");
     areaQuestions.innerHTML="";
     for(let i=0;i<numero;i++){
-        areaQuestions.innerHTML+=`<div class="pergunta" onclick="selectOption(this)">
-        <div class="titulo"><p>Pergunta ${i+1}</p><ion-icon name="create-outline"></ion-icon></div>
+        areaQuestions.innerHTML+=`<div class="pergunta" >
+        <div class="titulo"><p>Pergunta ${i+1}</p><ion-icon name="create-outline"onclick="selectOption(this.parentElement.parentElement)"></ion-icon></div>
         <div>
             <input type="text" class="textPergunta" id="" placeholder="Texto da pergunta">
             <input type="text" class="corPergunta" id="" placeholder="Cor da pergunta">
@@ -54,8 +54,8 @@ function addLevels(numero){
     const areaLevels = document.querySelector(".area");
     areaLevels.innerHTML="";
     for(let i=0;i<numero;i++){
-        areaLevels.innerHTML+=`<div class="nivel" onclick="selectOption(this)">
-        <div class="titulo"><p>Nivel ${i+1}</p><ion-icon name="create-outline"></ion-icon></div>
+        areaLevels.innerHTML+=`<div class="nivel"">
+        <div class="titulo"><p>Nivel ${i+1}</p><ion-icon name="create-outline" onclick="selectOption(this.parentElement.parentElement)"></ion-icon></div>
             <div>
                 <input type="text" class="tituloNivel" id="" placeholder="Titulo do nível">
                 <input type="text" class="acertoNivel" id="" placeholder="% de acerto">
@@ -80,16 +80,22 @@ function addSuccess(frase,url,id){
 }
 
 function selectOption(element){
+    console.log(element);
     const lista = document.querySelectorAll(`.${element.classList.value}`);
     lista.forEach(p=>{
         for(const child of p.children){
             if(child.classList!="titulo"){
                 child.style.display="none";
+            }else{
+                child.children[1].style.display="flex";
             }
         }
     })
     for(const child of element.children){
         child.style.display="flex";
+        if(child.classList=="titulo"){
+            child.children[1].style.display="none";
+        }
     }
 }
 
