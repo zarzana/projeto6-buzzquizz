@@ -259,7 +259,7 @@ class QuizzPage {
 
             for (let i = 0; i < 3; i++) {
                 
-                setTimeout(() => {this.targetElement.lastChild.remove()}, 200)  // wait so the scrolling can bagin
+                setTimeout(() => {this.targetElement.lastChild.remove()}, 200)  // wait so the scrolling can begin
             
             }
 
