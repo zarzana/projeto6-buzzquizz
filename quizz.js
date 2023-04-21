@@ -196,8 +196,6 @@ class QuizzPage {
 
     renderResult () {
 
-        console.log(this.achievedLevel);
-
         var quizzResult = document.createElement('div');
         quizzResult.setAttribute('class', 'quizz-result');
 
@@ -220,6 +218,16 @@ class QuizzPage {
         quizzResultContentText.setAttribute('data-test', 'level-text');
         quizzResultContentText.innerHTML = this.achievedLevel.text;
 
+        var quizzRestartButton = document.createElement('button');
+        quizzRestartButton.setAttribute('class', 'quizz-restart-button');
+        quizzRestartButton.setAttribute('data-test', 'restart');
+        quizzRestartButton.innerHTML = 'Reiniciar Quizz';
+
+        var quizzBackButton = document.createElement('button');
+        quizzBackButton.setAttribute('class', 'quizz-back-button');
+        quizzBackButton.setAttribute('data-test', 'go-home');
+        quizzBackButton.innerHTML = 'Voltar para home';
+
         quizzResultContent.appendChild(quizzResultContentImage);
         quizzResultContent.appendChild(quizzResultContentText);
         
@@ -227,6 +235,9 @@ class QuizzPage {
         quizzResult.appendChild(quizzResultContent);
 
         this.targetElement.appendChild(quizzResult);
+
+        this.targetElement.appendChild(quizzRestartButton);
+        this.targetElement.appendChild(quizzBackButton);
 
     }
 
@@ -239,6 +250,6 @@ class QuizzPage {
 }
 
 const pageDiv = document.body.querySelector('.page');
-var quizz = new QuizzPage(1, pageDiv);
+var quizz = new QuizzPage(26, pageDiv);
 
 quizz.load();

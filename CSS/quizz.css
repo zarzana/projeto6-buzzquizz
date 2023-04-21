@@ -121,8 +121,39 @@ body {
     word-break: normal;
 }
 
-@media (max-width: 1100px) {
+.quizz-restart-button {
+    display: block;
+    margin: auto;
+    width: 260px;
+    height: 52px;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    text-align: center;
+    color: #FFF5F4;
+    background-color: #EC362D;
+    border-radius: 15px;
+    border: none;
+    margin-top: 57px;
+    margin-bottom: 16px;
+}
 
+.quizz-back-button {
+    display: block;
+    margin: auto;
+    width: 220px;
+    height: 44px;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    text-align: center;
+    color: #818181;
+    border: none;
+    background-color: transparent;
+    margin-bottom: 70px;
+}
+
+@media (max-width: 1100px) {
     .quizz-banner {height: 142px; margin-bottom: 24px;}
     .quizz-banner h1 {font-size: 19px; line-height: 22px;}
     .quizz-question, .quizz-result {margin-bottom: 28px; width: 100%; padding-top: 5vw;}
@@ -132,6 +163,7 @@ body {
     .quizz-answers img {width: 44vw; height: 30vw;}
     .quizz-answers p {font-size: 13px; line-height: 15px; width: 44vw;}
     .quizz-result-content img { width: 100%; }
-    .quizz-result-content p { width: 100%; font-size: 13px; line-height: 15px; margin-top: 10px;}
-
+    .quizz-result-content p { width: 100%; font-size: 17px; line-height: 15px; margin-top: 10px;}
+    .quizz-restart-button { font-size: 18px; margin-bottom: 8px;}
+    .quizz-back-button { font-size: 18px; width: 220px; height: 44px;}
 }
