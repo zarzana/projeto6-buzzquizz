@@ -48,10 +48,22 @@ body>.criarPTitulo{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 24px;
 }
+.create{
+    width:100%;
+    padding: 16px 16px 0 16px;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+}
 .pergunta>*>*{
     margin-bottom: 14px;
 }
 .nivel>*>*{
+    margin-bottom: 14px;
+}
+.create>*{
     margin-bottom: 14px;
 }
 .pergunta>.titulo{
@@ -98,6 +110,13 @@ body>.criarPTitulo{
     flex-direction: column;
 }
 .nivel input{
+    width: 564px;
+    height: 46px;
+    background: #FFFFFF;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+}
+.create input{
     width: 564px;
     height: 46px;
     background: #FFFFFF;
