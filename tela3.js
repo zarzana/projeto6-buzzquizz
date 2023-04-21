@@ -12,41 +12,41 @@ function checkImage(url) {
 function addCreation(){
     const areaCreate = document.querySelector(".area");
     areaCreate.innerHTML=`<div class="create">
-        <input type="text" class="tituloCreate" id="" placeholder="Titulo do seu Quizz">
-        <input type="text" class="urlCreate" id="" placeholder="URL da imagem do seu quizz">
-        <input type="text" class="perguntasCreate" id="" placeholder="Quantidade de perguntas do quizz">
-        <input type="text" class="niveisCreate" id="" placeholder="Quantidade de níveis do quizz">
+        <input type="text" class="tituloCreate" id="" placeholder="Titulo do seu Quizz" data-test="title-input">
+        <input type="text" class="urlCreate" id="" placeholder="URL da imagem do seu quizz" data-test="img-input">
+        <input type="text" class="perguntasCreate" id="" placeholder="Quantidade de perguntas do quizz" data-test="questions-amount-input">
+        <input type="text" class="niveisCreate" id="" placeholder="Quantidade de níveis do quizz" data-test="levels-amount-input">
     </div>
-    <button onclick="Questions()">Prosseguir pra criar perguntas</button>`;
+    <button onclick="Questions()" data-test="go-create-questions">Prosseguir pra criar perguntas</button>`;
 }
 
 function addQuestions(numero){
     const areaQuestions = document.querySelector(".area");
     areaQuestions.innerHTML="";
     for(let i=0;i<numero;i++){
-        areaQuestions.innerHTML+=`<div class="pergunta" onclick="selectOption(this)">
-        <div class="titulo"><p>Pergunta ${i+1}</p><ion-icon name="create-outline"></ion-icon></div>
+        areaQuestions.innerHTML+=`<div class="pergunta" data-test="question-ctn">
+        <div class="titulo"><p>Pergunta ${i+1}</p><ion-icon name="create-outline"onclick="selectOption(this.parentElement.parentElement)" data-test="toggle"></ion-icon></div>
         <div>
-            <input type="text" class="textPergunta" id="" placeholder="Texto da pergunta">
-            <input type="text" class="corPergunta" id="" placeholder="Cor da pergunta">
+            <input type="text" class="textPergunta" id="" placeholder="Texto da pergunta" data-test="question-input">
+            <input type="text" class="corPergunta" id="" placeholder="Cor da pergunta" data-test="question-color-input">
         </div>
         <div>
             <p>Resposta correta</p>
-            <input type="text" class="respostaCorreta" id="" placeholder="Resposta correta">
-            <input type="text" class="urlResposta" id="" placeholder="URL da imagem">
+            <input type="text" class="respostaCorreta" id="" placeholder="Resposta correta" data-test="correct-answer-input">
+            <input type="text" class="urlResposta" id="" placeholder="URL da imagem" data-test="correct-img-input">
         </div>
         <div>
             <p>Resposta incorreta</p>
-            <input type="text" class="respostaIncorreta" id="" placeholder="Resposta incorreta 1">
-            <input type="text" class="urlResposta" id="" placeholder="URL da imagem 1">
-            <input type="text" class="respostaIncorreta" id="" placeholder="Resposta incorreta 2">
-            <input type="text" class="urlResposta" id="" placeholder="URL da imagem 2">
-            <input type="text" class="respostaIncorreta" id="" placeholder="Resposta incorreta 3">
-            <input type="text" class="urlResposta" id="" placeholder="URL da imagem 3">
+            <input type="text" class="respostaIncorreta" id="" placeholder="Resposta incorreta 1" data-test="wrong-answer-input">
+            <input type="text" class="urlResposta" id="" placeholder="URL da imagem 1" data-test="wrong-img-input">
+            <input type="text" class="respostaIncorreta" id="" placeholder="Resposta incorreta 2" data-test="wrong-answer-input">
+            <input type="text" class="urlResposta" id="" placeholder="URL da imagem 2" data-test="wrong-img-input">
+            <input type="text" class="respostaIncorreta" id="" placeholder="Resposta incorreta 3" data-test="wrong-answer-input">
+            <input type="text" class="urlResposta" id="" placeholder="URL da imagem 3" data-test="wrong-img-input">
         </div>
     </div>`;
     }
-    areaQuestions.innerHTML+=`<button onclick="Niveis()">Prosseguir pra criar níveis</button>`;
+    areaQuestions.innerHTML+=`<button onclick="Niveis()" data-test="go-create-levels">Prosseguir pra criar níveis</button>`;
     selectOption(document.querySelector(".pergunta"));
 }
 
@@ -54,42 +54,48 @@ function addLevels(numero){
     const areaLevels = document.querySelector(".area");
     areaLevels.innerHTML="";
     for(let i=0;i<numero;i++){
-        areaLevels.innerHTML+=`<div class="nivel" onclick="selectOption(this)">
-        <div class="titulo"><p>Nivel ${i+1}</p><ion-icon name="create-outline"></ion-icon></div>
+        areaLevels.innerHTML+=`<div class="nivel" data-test="level-ctn">
+        <div class="titulo"><p>Nivel ${i+1}</p><ion-icon name="create-outline" onclick="selectOption(this.parentElement.parentElement)" data-test="toggle"></ion-icon></div>
             <div>
-                <input type="text" class="tituloNivel" id="" placeholder="Titulo do nível">
-                <input type="text" class="acertoNivel" id="" placeholder="% de acerto">
-                <input type="text" class="urlNivel" id="" placeholder="URL da imagem do nível">
-                <input type="text" class="descNivel" id="" placeholder="Descrição do nível">
+                <input type="text" class="tituloNivel" id="" placeholder="Titulo do nível" data-test="level-input">
+                <input type="text" class="acertoNivel" id="" placeholder="% de acerto" data-test="level-percent-input">
+                <input type="text" class="urlNivel" id="" placeholder="URL da imagem do nível" data-test="level-img-input">
+                <input type="text" class="descNivel" id="" placeholder="Descrição do nível" data-test="level-description-input">
             </div>
         </div>`;
     }
-    areaLevels.innerHTML+=`<button onclick="Success()">Finalizar Quizz</button>`;
+    areaLevels.innerHTML+=`<button onclick="Success()" data-test="finish">Finalizar Quizz</button>`;
     selectOption(document.querySelector(".nivel"));
 }
 
 function addSuccess(frase,url,id){
     const areaSuccess = document.querySelector(".area");
     areaSuccess.innerHTML="";
-        areaSuccess.innerHTML+=`<div class="quizz" onclick="enterQuizz(${id})">
+        areaSuccess.innerHTML+=`<div class="quizz" onclick="enterQuizz(${id})" data-test="success-banner">
         <img class="img_quiz" src="${url}">
         <div class="text_quizz"><p>${frase}</p></div>
         </div>
-        <button onclick="enterQuizz(${id})">Acessar Quizz</button>
-        <button class="button2" onclick="returnMenu()">Voltar para home</button>`;
+        <button onclick="enterQuizz(${id})" data-test="go-quiz">Acessar Quizz</button>
+        <button class="button2" onclick="returnMenu()" data-test="go-home">Voltar para home</button>`;
 }
 
 function selectOption(element){
+    console.log(element);
     const lista = document.querySelectorAll(`.${element.classList.value}`);
     lista.forEach(p=>{
         for(const child of p.children){
             if(child.classList!="titulo"){
                 child.style.display="none";
+            }else{
+                child.children[1].style.display="flex";
             }
         }
     })
     for(const child of element.children){
         child.style.display="flex";
+        if(child.classList=="titulo"){
+            child.children[1].style.display="none";
+        }
     }
 }
 
@@ -224,8 +230,6 @@ async function Success(){
             document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
             addSuccess(obj["title"],obj["image"],resposta.data["id"]);
         })
-        document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
-        addSuccess(obj["title"],obj["image"]);
     }else{
         alert("Preencha os dados corretamente");
     }
