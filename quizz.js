@@ -8,7 +8,7 @@ axios.defaults.headers.common['Authorization'] = 'Fxjk1r6zE4PiUsz1zfhA34GZ';
 // e o objeto da div que deve conter os elementos da página como segundo parâmetro:
 
 // const pageDiv = document.body.querySelector('.page');
-// const quizz = new QuizzPage(1, pageDiv);
+// var quizz = new QuizzPage(1, pageDiv);
 
 // Para então carregar os elementos na página, basta utilizar o método .load():
 
@@ -25,6 +25,8 @@ class QuizzPage {
         this.numberOfQuestions = null;
         this.correctAnswers = 0;
         this.data = null;
+        this.achievedLevel = null;
+        this.percentageCorrect = null;
 
         this.renderQuizzPage = this.renderQuizzPage.bind(this);
         this.answerSelection = this.answerSelection.bind(this);
@@ -152,19 +154,20 @@ class QuizzPage {
                     else {elements[j].classList.add('unselected-answer')}
     
                     if (elements[j].id == correctAnswerId) {elements[j].lastChild.style.color = '#009C22'}
-                    else {elements[j].lastChild.style.color = '#FF4B4B'}
+                    else {elements[j].lastChild.style.color = '#FF4B4B'}  // FIX
                 
                 }
     
                 setTimeout(() => {
-    
-                    questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
-    
+
+                    try {questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})}
+                    catch (TypeError) {}
+
                 }, 2000)
 
                 this.resultTrigger()
     
-            }, {once : true})
+            })
     
         }
     
@@ -174,22 +177,100 @@ class QuizzPage {
 
         if (document.querySelectorAll('.selected-answer').length == this.numberOfQuestions) {
             
-            var percentageCorrect = 100 * this.correctAnswers / this.numberOfQuestions;
-            var percentageCorrectDisplay = Math.round(percentageCorrect);
-
-            var achievedLevel = null;
+            this.percentageCorrect = 100 * this.correctAnswers / this.numberOfQuestions;
 
             this.data.levels.forEach(level => {
 
-                if (percentageCorrect >= level.minValue) {
+                if (this.percentageCorrect >= level.minValue) {
 
-                    achievedLevel = level;
+                    this.achievedLevel = level;
 
                 }
 
             })
+
+            this.renderResult()
             
         }
+
+    }
+
+    renderResult () {
+
+        var quizzResult = document.createElement('div');
+        quizzResult.setAttribute('class', 'quizz-result');
+
+        var quizzResultTitle = document.createElement('div');
+        quizzResultTitle.setAttribute('class', 'quizz-result-title');
+        quizzResultTitle.setAttribute('data-test', 'level-title');
+
+        var quizzResultTitleH2 = document.createElement('h2');
+        quizzResultTitleH2.innerHTML = Math.round(this.percentageCorrect) + '% de acerto: ' + this.achievedLevel.title;
+        quizzResultTitle.appendChild(quizzResultTitleH2);
+
+        var quizzResultContent = document.createElement('div');
+        quizzResultContent.setAttribute('class', 'quizz-result-content');
+
+        var quizzResultContentImage = document.createElement('img');
+        quizzResultContentImage.setAttribute('data-test', 'level-img');
+        quizzResultContentImage.setAttribute('src', this.achievedLevel.image);
+
+        var quizzResultContentText = document.createElement('p');
+        quizzResultContentText.setAttribute('data-test', 'level-text');
+        quizzResultContentText.innerHTML = this.achievedLevel.text;
+
+        var quizzRestartButton = document.createElement('button');
+        quizzRestartButton.setAttribute('class', 'quizz-restart-button');
+        quizzRestartButton.setAttribute('data-test', 'restart');
+        quizzRestartButton.innerHTML = 'Reiniciar Quizz';
+
+        var quizzBackButton = document.createElement('button');
+        quizzBackButton.setAttribute('class', 'quizz-back-button');
+        quizzBackButton.setAttribute('data-test', 'go-home');
+        quizzBackButton.innerHTML = 'Voltar para home';
+
+        quizzResultContent.appendChild(quizzResultContentImage);
+        quizzResultContent.appendChild(quizzResultContentText);
+        
+        quizzResult.appendChild(quizzResultTitle);
+        quizzResult.appendChild(quizzResultContent);
+
+        this.targetElement.appendChild(quizzResult);
+
+        this.targetElement.appendChild(quizzRestartButton);
+        this.targetElement.appendChild(quizzBackButton);
+
+        // event listeners for buttons
+
+        quizzRestartButton.addEventListener('click', () => {
+
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            var allQuizzAnswers = document.querySelectorAll('.quizz-answer');
+
+            [].forEach.call(allQuizzAnswers, function(element) {
+
+                element.classList.remove('selected-answer');
+                element.classList.remove('unselected-answer');
+                element.lastChild.style.color ='black';
+
+            })
+
+            this.correctAnswers = 0;
+
+            for (let i = 0; i < 3; i++) {
+                
+                setTimeout(() => {this.targetElement.lastChild.remove()}, 200)  // wait so the scrolling can begin
+            
+            }
+
+        })
+
+        quizzBackButton.addEventListener('click', () => {
+
+            this.empty()
+
+        })
 
     }
 
@@ -201,7 +282,7 @@ class QuizzPage {
 
 }
 
-// const pageDiv = document.body.querySelector('.page');
-// const quizz = new QuizzPage(1, pageDiv);
+const pageDiv = document.body.querySelector('.page');
+var quizz = new QuizzPage(26, pageDiv);
 
-// quizz.load();
+quizz.load();
