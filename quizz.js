@@ -275,8 +275,7 @@ class QuizzPage {
     }
 
     empty () {
-
-        this.targetElement.innerHTML = '';
+        window.location.reload()
 
     }
 

@@ -2,6 +2,66 @@ axios.defaults.headers.common['Authorization'] = 'gScBm2BaQcHtufzILhmtZOn3';
 
 function rendering_quizzes (quizzes) {
 
+    const listIds = localStorage.getItem('ids');
+    const ids = JSON.parse(listIds);
+    console.log(ids)
+
+    const createQuizzDiv = document.querySelector('.createQuizzDiv')
+    createQuizzDiv.innerHTML = ''
+
+    if (ids == undefined) {
+        
+        createQuizzDiv.innerHTML = `
+        <div class="create_quizz border_dashed">
+
+          <p class="title">Você não criou nenhum quizz ainda :(</p>
+          <button onclick="Create()" class="create_quizz_buttom">Criar Quizz</button>
+        
+        </div>
+        `
+    } else {
+        createQuizzDiv.innerHTML += `
+            <div class="your_quizzes">
+
+                <div class="title_your_quizzes">
+                    <p class="title">Seus Quizzes</p>
+                    <div onclick="addCreation()" class="img_add_quiz">
+                        <img src="../Assets/add-circle-outline.svg" alt="">
+                    </div>
+                </div>
+            
+                <div class="quizzes">
+
+                    
+                </div>
+            </div>`
+
+        for (let count = 0; count< ids.length; count++) {
+            const promisse = axios.get(`https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes/${ids[count].id}`)
+            
+            const quizzCreated = document.querySelector('.quizzes')
+            console.log('aq')
+            promisse.then(function (quizzUser){
+
+                
+                const quizzData = quizzUser.data
+                console.log(quizzData.id)
+                quizzCreated.innerHTML += `
+                <div onclick="enter_in_quiz(${quizzData.id})" class="quizz">
+
+                    <img class="img_quiz" src=${quizzData.image}>
+                    <div class="gradient"></div>
+
+                    <div class="text_quizz">
+                        <p>${quizzData.title}</p>
+                    </div>
+
+                </div>`
+            })
+            
+            
+        }
+    }
 
     const HTMLquizzes = document.querySelector('.all_quizzes .quizzes')
     const all_quizzes = quizzes.data
@@ -42,6 +102,7 @@ function handle_error (error) {
 
 //renderizar os quizzes na tela inicial
 const promisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes')
+
 promisse.then(rendering_quizzes)
 promisse.catch(handle_error)
 
@@ -49,27 +110,15 @@ promisse.catch(handle_error)
 
 
 
-const exemplo = ["João", "Maria", "José"];  // Array que você quer salvar
-const exemploSerializado = JSON.stringify(exemplo); // Array convertida pra uma string
-
-localStorage.setItem("lista3", exemploSerializado);
-
-
-
-
-const listaSerializada = localStorage.getItem(Object.keys(localStorage)[1]);
-const listasla = JSON.parse(listaSerializada);
-console.log(Object.keys(localStorage)[1])
 
 
 
 function rendering_quizz (quizz) {
     console.log(quizz)
+
     const HTMLquizz = document.querySelector('.content_adjust')
     HTMLquizz.innerHTML = ''
-    
-    const pageDiv = document.body.querySelector('.content_adjust');
-    var quizz = new QuizzPage(quizz.data.id, pageDiv);
+    var quizz = new QuizzPage(quizz.data.id, HTMLquizz);
     
     quizz.load();
 
