@@ -159,9 +159,10 @@ class QuizzPage {
                 }
     
                 setTimeout(() => {
-    
-                    questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})
-    
+
+                    try {questionDiv.closest('.quizz-question').nextSibling.scrollIntoView({ behavior: 'smooth', block: 'center'})}
+                    catch (TypeError) {}
+
                 }, 2000)
 
                 this.resultTrigger()
