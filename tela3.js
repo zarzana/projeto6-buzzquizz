@@ -68,15 +68,15 @@ function addLevels(numero){
     selectOption(document.querySelector(".nivel"));
 }
 
-function addSuccess(frase,url){
+function addSuccess(frase,url,id){
     const areaSuccess = document.querySelector(".area");
     areaSuccess.innerHTML="";
-        areaSuccess.innerHTML+=`<div class="quizz">
+        areaSuccess.innerHTML+=`<div class="quizz" onclick="enterQuizz(${id})">
         <img class="img_quiz" src="${url}">
         <div class="text_quizz"><p>${frase}</p></div>
         </div>
-        <button>Acessar Quizz</button>
-        <button class="button2">Voltar para home</button>`;
+        <button onclick="enterQuizz(${id})">Acessar Quizz</button>
+        <button class="button2" onclick="returnMenu()">Voltar para home</button>`;
 }
 
 function selectOption(element){
@@ -169,8 +169,8 @@ async function Niveis(){
             obj["questions"][i]['title'] = textoP[i].value;
             obj["questions"][i]['color'] = corP[i].value;
             obj["questions"][i]['answers'] = [{}];
-            obj["questions"][i]['answers'][0]['text'] = respcP[0].value
-            obj["questions"][i]['answers'][0]['image'] = respURL[0].value
+            obj["questions"][i]['answers'][0]['text'] = respcP[i].value
+            obj["questions"][i]['answers'][0]['image'] = respURL[i].value
             obj["questions"][i]['answers'][0]['isCorrectAnswer'] = true;
             for(let c=0;c<respIfiltro[i].length;c++){
                 obj["questions"][i]['answers'][c+1]={};
@@ -222,11 +222,20 @@ async function Success(){
             localStorage.setItem("ids",ls);
             console.log(resposta);
             document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
-            addSuccess(obj["title"],obj["image"]);
+            addSuccess(obj["title"],obj["image"],resposta.data["id"]);
         })
         document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
         addSuccess(obj["title"],obj["image"]);
     }else{
         alert("Preencha os dados corretamente");
     }
+}
+
+function returnMenu(){
+    location.reload();
+}
+
+function enterQuizz(id){
+    var quizz = new QuizzPage(id);
+    quizz.load();
 }
