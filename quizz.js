@@ -1,25 +1,34 @@
 // token para acesso do axios (Gabriel)
 axios.defaults.headers.common['Authorization'] = 'Fxjk1r6zE4PiUsz1zfhA34GZ';
 
-// get para obter todos os quizzes
-// const quizzesPromisse = axios.get('https://mock-api.driven.com.br/api/vm/uol/messages');
 
-// get para obter quizz por id
-// const quizzPromisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes/ID_DO_QUIZZ');
+// |----- COMO UTILIZAR -----|\
 
-// post para criar quizz
-// const newQuizzPromisse = axios.post('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes', newQuizz);
+// Para utilizar, basta instanciar a classe passando o id do quizz como primeiro parâmetro
+// e o objeto da div que deve conter os elementos da página como segundo parâmetro:
+
+// const pageDiv = document.body.querySelector('.page');
+// const quizz = new QuizzPage(1, pageDiv);
+
+// Para então carregar os elementos na página, basta utilizar o método .load():
+
+// quizz.load();
 
 
 class QuizzPage {
 
-    constructor (id) {
+    constructor (id, targetElement = document.body) {
+
         this.id = id;
+        this.targetElement = targetElement;
+
         this.numberOfQuestions = null;
         this.correctAnswers = 0;
         this.data = null;
+
         this.renderQuizzPage = this.renderQuizzPage.bind(this);
         this.answerSelection = this.answerSelection.bind(this);
+
     }
 
     static fisherYatesShuffle (arr) {
@@ -62,7 +71,8 @@ class QuizzPage {
 
         quizzBanner.appendChild(quizzBannerImage);
         quizzBanner.appendChild(quizzBannerH1);
-        document.body.appendChild(quizzBanner);
+        
+        this.targetElement.appendChild(quizzBanner);
 
         // quizz questions
 
@@ -114,7 +124,7 @@ class QuizzPage {
 
             quizzQuestionDiv.appendChild(quizzQuestionTitle);
             quizzQuestionDiv.appendChild(quizzAnswersDiv);
-            document.body.appendChild(quizzQuestionDiv);
+            this.targetElement.appendChild(quizzQuestionDiv);
 
             this.answerSelection(quizzQuestionDiv.lastChild, correctAnswerId)
 
@@ -183,7 +193,15 @@ class QuizzPage {
 
     }
 
+    empty () {
+
+        this.targetElement.innerHTML = '';
+
+    }
+
 }
 
-// const quizz = new QuizzPage(1);
+// const pageDiv = document.body.querySelector('.page');
+// const quizz = new QuizzPage(1, pageDiv);
+
 // quizz.load();
