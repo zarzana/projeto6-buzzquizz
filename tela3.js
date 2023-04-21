@@ -178,14 +178,39 @@ async function Niveis(){
             }
         }
         document.querySelector(".criarPTitulo").innerHTML="Agora, decida os níveis";
-        addLevels(qtdNivel);
+        addLevels(obj["levels"].length);
     }else{
         alert("Preencha os dados corretamente");
         console.log(textoPfiltro.length,corPfiltro.length,respcPfiltro.length,respURLfiltro.length,rivazio);
     }
 }
 
-function Success(){
-    document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
-    addSuccess(titulo,url);
+async function Success(){
+    const niveis = document.querySelectorAll(".nivel");
+    const tNiveis = Array.from(niveis).map(x=>x.querySelector(".tituloNivel"));
+    const acNiveis = Array.from(niveis).map(x=>x.querySelector(".acertoNivel"));
+    const urlNiveis = Array.from(niveis).map(x=>x.querySelector(".urlNivel"));
+    const descNiveis = Array.from(niveis).map(x=>x.querySelector(".descNivel"));
+    let tNiveisFiltro = tNiveis.filter(x=>x.value.length<10);
+    let acNiveisFiltro = acNiveis.filter(x=>x.value<0||x.value>100);
+    let urlNiveisFiltro = urlNiveis.filter(x=>!checkImage(x.value));
+    let descNiveisFiltro = descNiveis.filter(x=>x.value.length<30);
+    let acZero = acNiveis.filter(x=>x.value==0);
+    console.log(tNiveisFiltro.length==0,acNiveisFiltro.length==0,urlNiveisFiltro.length==0,descNiveisFiltro.length==0,acNiveisFiltro.length==0,acZero!=0);
+    if(tNiveisFiltro.length==0&&
+        acNiveisFiltro.length==0&&
+        urlNiveisFiltro.length==0&&
+        descNiveisFiltro.length==0&&
+        acZero.length!=0){
+        for(let i=0;i<obj["levels"].length;i++){
+            obj["levels"][i]['title'] = tNiveis[i].value;
+            obj["levels"][i]['image'] = urlNiveis[i].value;
+            obj["levels"][i]['text'] = descNiveis[i].value;
+            obj["levels"][i]['minValue'] = acNiveis[i].value;
+        }
+        document.querySelector(".criarPTitulo").innerHTML="Seu quizz está pronto!";
+        addSuccess(obj["title"],obj["image"]);
+    }else{
+        alert("Preencha os dados corretamente");
+    }
 }
