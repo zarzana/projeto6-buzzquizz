@@ -154,7 +154,7 @@ class QuizzPage {
                     else {elements[j].classList.add('unselected-answer')}
     
                     if (elements[j].id == correctAnswerId) {elements[j].lastChild.style.color = '#009C22'}
-                    else {elements[j].lastChild.style.color = '#FF4B4B'}
+                    else {elements[j].lastChild.style.color = '#FF4B4B'}  // FIX
                 
                 }
     
@@ -166,7 +166,7 @@ class QuizzPage {
 
                 this.resultTrigger()
     
-            }, {once : true})
+            })
     
         }
     
@@ -238,6 +238,32 @@ class QuizzPage {
 
         this.targetElement.appendChild(quizzRestartButton);
         this.targetElement.appendChild(quizzBackButton);
+
+        // event listeners for buttons
+
+        quizzRestartButton.addEventListener('click', () => {
+
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            var allQuizzAnswers = document.querySelectorAll('.quizz-answer');
+
+            [].forEach.call(allQuizzAnswers, function(element) {
+
+                element.classList.remove('selected-answer');
+                element.classList.remove('unselected-answer');
+                element.lastChild.style.color ='black';
+
+            })
+
+            this.correctAnswers = 0;
+
+            for (let i = 0; i < 3; i++) {
+                
+                setTimeout(() => {this.targetElement.lastChild.remove()}, 200)  // wait so the scrolling can bagin
+            
+            }
+
+        })
 
     }
 

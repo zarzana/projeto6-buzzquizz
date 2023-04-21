@@ -17,6 +17,10 @@ body {
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
 }
 
+.selected-answer {
+    pointer-events: none;
+}
+
 .unselected-answer {
     pointer-events: none;
     opacity: 0.3;
