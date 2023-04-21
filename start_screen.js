@@ -47,6 +47,22 @@ promisse.catch(handle_error)
 
 
 
+
+
+const exemplo = ["João", "Maria", "José"];  // Array que você quer salvar
+const exemploSerializado = JSON.stringify(exemplo); // Array convertida pra uma string
+
+localStorage.setItem("lista3", exemploSerializado);
+
+
+
+
+const listaSerializada = localStorage.getItem(Object.keys(localStorage)[1]);
+const listasla = JSON.parse(listaSerializada);
+console.log(Object.keys(localStorage)[1])
+
+
+
 function rendering_quizz (quizz) {
     const HTMLquizz = document.querySelector('.content_adjust')
     HTMLquizz.innerHTML = ''
