@@ -1,0 +1,9 @@
+@media (max-width: 1100px) {
+    body {display: flex; justify-content: center;}
+    .content_adjust {width: 710px;}
+    .quizzes {width: 100%;}
+
+    @media (max-width: 725px) {
+        .content_adjust {width: 340px;}
+    }
+}

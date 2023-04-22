@@ -108,6 +108,10 @@ body {
     word-break: normal;
 }
 
+.quizz-answer:hover {
+    cursor: pointer;
+}
+
 .quizz-result-content {
     padding-bottom: 28px;
 }
@@ -164,7 +168,8 @@ body {
     .quizz-question-title, .quizz-result-title {width: 90%; margin-left: 5%; height: 90px;}
     .quizz-question-title h2, .quizz-result-title h2 {font-size: 19px; line-height: 22px;}
     .quizz-answers, .quizz-result-content {width: 90%; margin-left: 5%;}
-    .quizz-answers img {width: 44vw; height: 30vw;}
+    .quizz-answers {display: flex; justify-content: center;}
+    .quizz-answers img {width: 100%;}
     .quizz-answers p {font-size: 13px; line-height: 15px; width: 44vw;}
     .quizz-result-content img { width: 100%; }
     .quizz-result-content p { width: 100%; font-size: 17px; line-height: 15px; margin-top: 10px;}

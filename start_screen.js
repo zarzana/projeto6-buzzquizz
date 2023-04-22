@@ -13,10 +13,10 @@ function rendering_quizzes (quizzes) {
         
         createQuizzDiv.innerHTML = `
         <div class="create_quizz border_dashed">
-
-          <p class="title">Você não criou nenhum quizz ainda :(</p>
-          <button onclick="Create()" class="create_quizz_buttom">Criar Quizz</button>
-        
+            <div class="create_adjust">
+                <p class="title">Você não criou nenhum quizz ainda :(</p>
+                <button data-test="create-btn" onclick="Create()" class="create_quizz_buttom">Criar Quizz</button>
+            </div>
         </div>
         `
     } else {
@@ -25,8 +25,8 @@ function rendering_quizzes (quizzes) {
 
                 <div class="title_your_quizzes">
                     <p class="title">Seus Quizzes</p>
-                    <div onclick="addCreation()" class="img_add_quiz">
-                        <img src="../Assets/add-circle-outline.svg" alt="">
+                    <div data-test="create-btn" onclick="Create()" class="img_add_quiz">
+                        <img src="../Assets/add-circle-outline.svg">
                     </div>
                 </div>
             
@@ -47,7 +47,7 @@ function rendering_quizzes (quizzes) {
                 const quizzData = quizzUser.data
                 console.log(quizzData.id)
                 quizzCreated.innerHTML += `
-                <div onclick="enter_in_quiz(${quizzData.id})" class="quizz">
+                <div data-test="my-quiz" onclick="enter_in_quiz(${quizzData.id})" class="quizz">
 
                     <img class="img_quiz" src=${quizzData.image}>
                     <div class="gradient"></div>
@@ -71,7 +71,7 @@ function rendering_quizzes (quizzes) {
 
     for (let i = 0; i < all_quizzes.length; i++) {
         HTMLquizzes.innerHTML += `
-        <div onclick="enter_in_quiz(${all_quizzes[i].id})" class="quizz">
+        <div data-test="others-quiz" onclick="enter_in_quiz(${all_quizzes[i].id})" class="quizz">
 
             <img class="img_quiz" src=${all_quizzes[i].image}>
             <div class="gradient"></div>

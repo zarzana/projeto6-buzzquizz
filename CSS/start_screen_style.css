@@ -63,11 +63,18 @@ body {
     font-weight: 400;
 }
 
+.create_quizz_buttom:hover {
+    cursor: pointer;
+}
+
 .title_your_quizzes {
     display: flex;
     align-items: center;
 }
 
+.img_add_quiz:hover {
+    cursor: pointer;
+}
 .img_add_quiz img {
     margin-left: 15px;
     width: 30px;
@@ -75,6 +82,13 @@ body {
 
 .all_quizzes {
     margin-top: 70px;
+}
+
+.create_adjust {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .title {
@@ -98,8 +112,9 @@ body {
     margin-right: 15px;
     margin-bottom: 15px;
 
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 4px;
+
     border-radius: 5px;
-    background-color: blue;
 }
 
 
