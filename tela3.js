@@ -24,7 +24,7 @@ function addQuestions(numero){
     const areaQuestions = document.querySelector(".area");
     areaQuestions.innerHTML="";
     for(let i=0;i<numero;i++){
-        areaQuestions.innerHTML+=`<div class="pergunta" data-test="question-ctn">
+        areaQuestions.innerHTML+=`<div data-test="question-ctn" class="pergunta">
         <div class="titulo"><p>Pergunta ${i+1}</p><ion-icon name="create-outline"onclick="selectOption(this.parentElement.parentElement)" data-test="toggle"></ion-icon></div>
         <div>
             <input type="text" class="textPergunta" id="" placeholder="Texto da pergunta" data-test="question-input">
