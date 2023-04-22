@@ -63,6 +63,10 @@ body {
     font-weight: 400;
 }
 
+.create_quizz_buttom:hover {
+    cursor: pointer;
+}
+
 .title_your_quizzes {
     display: flex;
     align-items: center;
