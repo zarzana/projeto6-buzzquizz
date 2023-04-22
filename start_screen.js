@@ -13,10 +13,10 @@ function rendering_quizzes (quizzes) {
         
         createQuizzDiv.innerHTML = `
         <div class="create_quizz border_dashed">
-
-          <p class="title">Você não criou nenhum quizz ainda :(</p>
-          <button data-test="create-btn" onclick="Create()" class="create_quizz_buttom">Criar Quizz</button>
-        
+            <div class="create_adjust">
+                <p class="title">Você não criou nenhum quizz ainda :(</p>
+                <button data-test="create-btn" onclick="Create()" class="create_quizz_buttom">Criar Quizz</button>
+            </div>
         </div>
         `
     } else {
